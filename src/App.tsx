@@ -1376,8 +1376,8 @@ function App() {
 						Ƥ
 					</div>
 					<div className="brand-text">
-						<span className="brand-name">PYUSD</span>
-						<span className="brand-sub">Strategy Dashboard</span>
+						<span className="brand-name">PayYield</span>
+						<span className="brand-sub">DeFi Yield Strategies for PayPal USD (PYUSD)</span>
 					</div>
 				</div>
 
@@ -1411,7 +1411,7 @@ function App() {
 				{/* Hero */}
 				<section className="hero">
 					<div className="hero-kicker">
-						P • PYUSD Strategies • Powered by PayPal USD
+						PayYield • DeFi Yield Strategies • Powered by PayPal USD
 					</div>
 					<h1 className="hero-title">
 						Maximize Your <span className="grad">PYUSD</span> Returns
@@ -1668,7 +1668,7 @@ function App() {
 				{/* Why Choose */}
 				<section>
 					<div className="section-head">
-						<h3 className="section-title">Why Choose PYUSD Strategies?</h3>
+						<h3 className="section-title">Why Choose PayYield?</h3>
 					</div>
 					<div className="grid why">
 						<div className="card feature">
@@ -1923,7 +1923,7 @@ function App() {
 
 			{/* Footer */}
 			<footer className="footer">
-				<span>Built with ❤️ for the PYUSD ecosystem</span>
+				<span>PayYield — Built with ❤️ for the PayPal USD ecosystem</span>
 			</footer>
 		</div>
 	);
