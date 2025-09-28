@@ -1,74 +1,71 @@
-# React + TypeScript + Vite
+# PayYield — DeFi Yield Strategies for PayPal USD (PYUSD)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Maximize your PYUSD returns with institutional-grade strategies.**  
+Deposit PYUSD via simple single-asset zaps and access optimized Uniswap v3 strategies, yield farming, and cross-chain opportunities. Built with ❤️ for the PayPal USD ecosystem.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Project Overview
 
-## React Compiler
+PayYield brings **one-click DeFi strategies** to holders of **PayPal USD (PYUSD)**.  
+Instead of holding PYUSD idle, users can deposit directly and gain exposure to curated strategies, while always keeping balances denominated in PYUSD.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Key Features:**
+- **Single-Token Zaps:** Deposit/withdraw using only PYUSD — we handle routing into/out of LPs.
+- **Curated Strategies:** Choose from low, medium, and high-risk options optimized for yield.
+- **Automated Rebalancing:** Strategies continuously adjust positions to stay optimal.
+- **Transparent Returns:** All APYs, TVL, and risks shown clearly on the dashboard.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📊 Dashboard
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **PYUSD Balance:** Live wallet balance display.  
+- **Featured Strategies:**  
+  - *PYUSD/USDC Liquidity Pool* — 5.7% APY (Low risk).  
+  - *PYUSD Yield Farming* — 8.4% APY (Medium risk).  
+  - *Cross-Chain PYUSD Bridge* — 12.1% APY (High risk, 🚧 coming soon).  
+- **Your Positions:** Track deposits, exits, and returns.  
+- **Zaps:** One-click deposit/withdraw, always in PYUSD.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠️ Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Frontend:** React + Vite + TailwindCSS  
+- **Smart Contracts:** Solidity, Uniswap v3 Position Manager, Zap logic  
+- **Oracles:** [Pyth Network](https://pyth.network) for reliable price feeds  
+- **Wallet Integration:** MetaMask, WalletConnect  
+- **Deployment:** Arbitrum One (demo), extensible to other chains
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# PYUSDZap
+## 🔒 Security & Trust
+
+- **Bank-Grade Security:** Multi-sig wallets and audited contracts.  
+- **Transparent:** Open-source strategies with on-chain accounting.  
+- **DYOR:** Past performance does not guarantee future results.
+
+---
+
+## ⚡ How It Works
+
+1. **Connect Wallet** — see your PYUSD balance.  
+2. **Select a Strategy** — choose based on APY/risk profile.  
+3. **Deposit via Zap** — supply only PYUSD, we auto-split/swap to LP.  
+4. **Earn Yield** — positions are optimized and rebalanced.  
+5. **Withdraw to PYUSD** — exit anytime back to a single PYUSD balance.  
+
+---
+
+## 🌐 Built for ETHGlobal New Delhi 2025
+
+PayYield bridges the gap between **PayPal’s stablecoin (PYUSD)** and the **world of DeFi yields**.  
+It’s the simplest way to put your PYUSD to work — transparent, automated, and secure.
+
+---
+
+## ⚠️ Disclaimer
+
+This project was built as a **hackathon prototype**.  
+Not audited, not production ready. Always DYOR.
