@@ -832,19 +832,12 @@ function App() {
     }
   }
 
-  // Withdraw from position - Single transaction like Uniswap interface
+  // Withdraw from position - Single transaction + auto-swap USDC back to PYUSD
   async function handleWithdraw(position: Position) {
     if (!position.tokenId) {
       setTxError('Invalid position - no token ID found')
       return
     }
-    
-    const confirmWithdraw = window.confirm(
-      `Are you sure you want to withdraw position #${position.tokenId}?\n\n` +
-      `This will close the position completely and return all tokens to your wallet.`
-    )
-    
-    if (!confirmWithdraw) return
     
     try {
       setTxLoading(true)
@@ -897,7 +890,90 @@ function App() {
       
       console.log('✅ Position withdrawn successfully in single transaction!')
       console.log('💰 Transaction hash:', receipt.transactionHash)
-      console.log('💰 All PYUSD and USDC returned to your wallet')
+      
+      // Step 2: Swap any USDC back to PYUSD
+      console.log('🔄 Checking USDC balance to swap back to PYUSD...')
+      const usdcContract = new ethers.Contract(USDC.address, ERC20_ABI, provider)
+      const usdcBalance = await usdcContract.balanceOf(account)
+      
+      if (usdcBalance.gt(0)) {
+        console.log(`💱 Swapping ${ethers.utils.formatUnits(usdcBalance, 6)} USDC back to PYUSD...`)
+        
+        try {
+          // Try 0x first for USDC → PYUSD swap
+          const params = new URLSearchParams({
+            sellToken: USDC.address,
+            buyToken: PYUSD_ADDRESS,
+            sellAmount: usdcBalance.toString(),
+            takerAddress: account || '',
+            slippagePercentage: '0.01', // 1% slippage
+          })
+          const swapUrl = `${ZEROX_API}/swap/v1/quote?${params.toString()}`
+          const res = await fetch(swapUrl)
+          
+          if (res.ok) {
+            const swapData = await res.json()
+            const txTo = swapData.to
+            const txData = swapData.data
+            const txValue = swapData.value || '0'
+            const allowanceTarget = swapData.allowanceTarget
+            
+            // Approve USDC to allowanceTarget if needed
+            const currentAllow = await usdcContract.allowance(account, allowanceTarget)
+            if (currentAllow.lt(usdcBalance)) {
+              console.log('Approving USDC for swap...')
+              const approveTx = await usdcContract.connect(signer).approve(allowanceTarget, usdcBalance)
+              await approveTx.wait()
+            }
+            
+            // Execute swap
+            const swapTx = await signer.sendTransaction({ 
+              to: txTo, 
+              data: txData, 
+              value: ethers.BigNumber.from(txValue) 
+            })
+            await swapTx.wait()
+            
+            console.log('✅ USDC swapped back to PYUSD successfully!')
+          } else {
+            console.log('⚠️ 0x swap failed, trying Uniswap fallback...')
+            
+            // Fallback to Uniswap for USDC → PYUSD
+            const router = new ethers.Contract(UNISWAP_V3_ROUTER, UNISWAP_ROUTER_ABI, signer)
+            
+            // Approve Uniswap router if needed
+            const routerAllow = await usdcContract.allowance(account, UNISWAP_V3_ROUTER)
+            if (routerAllow.lt(usdcBalance)) {
+              console.log('Approving USDC for Uniswap swap...')
+              const approveTx = await usdcContract.connect(signer).approve(UNISWAP_V3_ROUTER, usdcBalance)
+              await approveTx.wait()
+            }
+            
+            const swapParams = {
+              tokenIn: USDC.address,
+              tokenOut: PYUSD_ADDRESS,
+              fee: 3000, // 0.3% fee tier
+              recipient: account,
+              deadline: Math.floor(Date.now() / 1000) + 1800,
+              amountIn: usdcBalance,
+              amountOutMinimum: 0,
+              sqrtPriceLimitX96: 0
+            }
+            
+            const swapTx = await router.exactInputSingle(swapParams)
+            await swapTx.wait()
+            
+            console.log('✅ USDC swapped back to PYUSD via Uniswap!')
+          }
+        } catch (swapError) {
+          console.error('⚠️ Failed to swap USDC back to PYUSD:', swapError)
+          console.log('USDC remains in wallet - you can swap manually if needed')
+        }
+      } else {
+        console.log('No USDC to swap back')
+      }
+      
+      console.log('🎉 Withdrawal complete! All funds converted back to PYUSD')
       
       // Refresh positions and balance
       console.log('🔄 Refreshing positions and balance...')
